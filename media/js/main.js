@@ -5,11 +5,17 @@ require.config({
     'underscore': 'libs/underscore',
     'parse': 'libs/parse.min',
     'backbone':'backbone',
+    'text': 'libs/text',
+    'mustache':'libs/mustache-wrap',
+    'stache':'libs/stache'
   },
   shim: {
 	  	 'backbone':{
 		  	deps:["underscore","jquery"],
 	  		exports: "Backbone"
+	  	 },
+	  	 'libs/mustache':{
+	  		 exports : "Mustache"
 	  	 },
 	     'parse': {
 	        exports: 'Parse',
@@ -22,7 +28,7 @@ require.config({
 	     'libs/jquery.parse':{
 	    	 exports: '$parse',
 	    	 deps:['jquery']
-	     }
+	     },
 	}
 
 });
