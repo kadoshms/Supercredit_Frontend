@@ -8,9 +8,12 @@ define(
    'jquery',
    'parse'
   ], function ($, Parse) {
-      "use strict"; 
+      "use strict";
+      var params = {}
       Parse.$ = $;
-      Parse.initialize("CtKrDhLEMo8k05hV4HekNMkx4MXmpBercuzruQ2T", "DXiwCPUXTc5KexElBXhOVg6y9UWi0ym4bbbuD8LL");
-      return Parse;
+      params.appId = "CtKrDhLEMo8k05hV4HekNMkx4MXmpBercuzruQ2T";
+      params.jsKey = "DXiwCPUXTc5KexElBXhOVg6y9UWi0ym4bbbuD8LL";
+      Parse.initialize(params.appId,params.jsKey);
+      return {parse:Parse,params:params};
   }
 );

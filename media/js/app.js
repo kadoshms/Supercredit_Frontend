@@ -4,10 +4,9 @@ define([
   'underscore',
   'backbone',
   'libs/mustache',
-  'libs/backbone.parse',
-  'libs/jquery.parse',
+  'pParse',
   'views/main',
-], function($, _, Backbone,Mustache,BackboneParse,$parse,MainView){
+], function($, _, Backbone,Mustache,pParse,MainView){
   var initialize = function(){
 	var mainView = new MainView.MainView()
 	mainView.render()
