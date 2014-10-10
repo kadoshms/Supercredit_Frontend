@@ -1,23 +1,44 @@
 @import "compass/reset";
 @import "bootstrap";
 @import	"mixins.scss";
+@import "slider.scss";
 html,body{
 	text-align:center;
 	min-height: 100% !important;
     height: 100%;
 	margin:0;
+	margin-top: 2%;
 	padding:0;
 }
 #main-content{
-	border:1px solid red;
 	float:left;
 	width:100%;
 	height:100%;
 	text-align:center;
+}
+#main-panel-body{
+	text-align: center;
+	.alert{
+		text-align:left;
+	}
+	button{
+		margin : auto;
+		colr:red;
+	}
 }
 #main-panel{
 	margin : auto;
 }
 [list-id='type-list']{
 	text-align: left;
+}
+.list-group-item span{
+	padding-left : 20px;
+}
+#slider-container{
+	span{
+		padding-right: 20px;
+		padding-left : 20px;
+		font-weight	: bold;
+	}
 }
