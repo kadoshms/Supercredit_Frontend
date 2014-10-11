@@ -40,20 +40,29 @@ define([
 		},
 		purchase: function(){
 			var view = this;
-			var noticeNoType = new Notice.NoticeView("warning","You Havent Chosent a Purchase Type!","warning-sign")
-			var noticeApproved = new Notice.NoticeView("success","Purchase Approved!","ok")
-			var noticeNoCred = new Notice.NoticeView("warning","Credit card number was not authorized.","warning-sign")
-			var noticePurchaseDenied = new Notice.NoticeView("danger","Your Purchase was Denied! A Push Notification Should Arrive now.","ban-circle")
+			var noticeNoType = new Notice.NoticeView("warning","You Havent Chosent a Purchase Type!","warning-sign","no-type")
+			var noticeEmptyCredit = new Notice.NoticeView("warning","You havent filled your Supercredit Card number!","warning-sign","no-credit")
+			var noticeApproved = new Notice.NoticeView("success","Purchase Approved!","ok","purchase-approved")
+			var noticeNoCred = new Notice.NoticeView("warning","Credit card number was not authorized.","warning-sign","no-credentials")
+			var noticePurchaseDenied = new Notice.NoticeView("danger","Your Purchase was Denied! A Push Notification Should Arrive now.","ban-circle","purchase_denied")
 			var _value = typeof(this.sliderModel.get("value")) == "undefined" ? 0 : this.sliderModel.get("value")
 			var _type = this.$el.find("input[name=purchase_type]:checked").val()
+			var _credit = this.$el.find("input[name=credit_hash]").val()
 			this.changeButton(true)
+			var flag = true;
 			if(typeof(_type)=="undefined"){
 				noticeNoType.render()
 				view.changeButton(false)
-				return false;
-			}
-			else
+				flag = false;
+			}else
 				noticeNoType.destroy()
+			if(_credit==""){
+				noticeEmptyCredit.render()
+				view.changeButton(false)
+				flag = false;
+			}else
+				noticeEmptyCredit.destroy()
+			if(!flag) return false;
 			$.ajax({
 				type: "POST",
 				url: Config.url+"purchases/",

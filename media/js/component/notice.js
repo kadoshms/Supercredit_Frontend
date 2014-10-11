@@ -9,17 +9,21 @@ define([
 	var exports = {}
 	exports.NoticeView = Backbone.View.extend({
 		el : '#notice-container',
-		initialize: function(type,content,sign){
+		initialize: function(type,content,sign,identifier){
 			this.type = type;
 			this.content = content;
 			this.sign = sign;
+			this.identifier = identifier;
 		},
 		destroy: function(){
-			this.$el.empty()
+			var e = this.$el.find('[notice-id="'+this.identifier+'"]').remove()
 		},
 		render: function(){
-			var output = Mustache.to_html(NoticeTemplate,{type:this.type,content:this.content,sign:this.sign})
-			this.$el.html(output)
+			var e = this.$el.find('[notice-id="'+this.identifier+'"]')
+			if(e.length == 0){
+				var output = Mustache.to_html(NoticeTemplate,{type:this.type,content:this.content,sign:this.sign,identifier:this.identifier})
+				this.$el.prepend(output)
+			}
 		}
 	});
 	return exports;

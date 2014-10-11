@@ -22,9 +22,6 @@ define([
 			this.model = viewParams.model
 			this.render()
 		},
-		getOption: function(){
-			console.log( this.sliderOptions);
-		},
 		render: function(){
 			var _options = this.sliderOptions;
 			var content = Mustache.to_html(SliderTemplate,{max:_options.max,min:_options.min})
