@@ -22,14 +22,34 @@ define([
 			this.listenTo(this.sliderModel,"change",this.updateSliderValue)
 		},
 		updateSliderValue: function(){
-			var _sliderValue = this.$el.find('#slider-value').val(this.sliderModel.get("value")+" ₪")
+			var _sliderValue = this.$el.find('#slider-value').val(this.sliderModel.get("value"))
+		},
+		changeButton: function(toLoading){
+			var _btn = this.$el.find('#btn-purchase');
+			var _btnIcon = this.$el.find('#btn-icon');
+			var _btnTxt = _btn.find('#btn-text')
+			if(toLoading){
+				_btnTxt.text('Loading...')
+				_btn.removeClass('btn-success').addClass('btn-warning');
+				_btnIcon.removeClass('glyphicon-shopping-cart').addClass('glyphicon-refresh').addClass('loadingAnim')		
+			}else{
+				_btnTxt.text('Purchase Now')
+				_btn.removeClass('btn-warning').addClass('btn-success');
+				_btnIcon.addClass('glyphicon-shopping-cart').removeClass('glyphicon-refresh').removeClass('loadingAnim')				
+			}
 		},
 		purchase: function(){
-			var noticeNoType = new Notice.NoticeView("You Havent Chosent a Purchase Type!")
+			var view = this;
+			var noticeNoType = new Notice.NoticeView("warning","You Havent Chosent a Purchase Type!","warning-sign")
+			var noticeApproved = new Notice.NoticeView("success","Purchase Approved!","ok")
+			var noticeNoCred = new Notice.NoticeView("warning","Credit card number was not authorized.","warning-sign")
+			var noticePurchaseDenied = new Notice.NoticeView("danger","Your Purchase was Denied! A Push Notification Should Arrive now.","ban-circle")
 			var _value = typeof(this.sliderModel.get("value")) == "undefined" ? 0 : this.sliderModel.get("value")
-			var _type = this.$el.find("input[name=purchase-type]:checked").val()
+			var _type = this.$el.find("input[name=purchase_type]:checked").val()
+			this.changeButton(true)
 			if(typeof(_type)=="undefined"){
 				noticeNoType.render()
+				view.changeButton(false)
 				return false;
 			}
 			else
@@ -38,11 +58,18 @@ define([
 				type: "POST",
 				url: Config.url+"purchases/",
 				data: $( "#purchase-form" ).serialize(),
-				fail: function(e){
+				error: function(e){
 					console.log(e)
 				},
-				//success: success,
-				//ataType: dataType
+				success: function(res){
+					view.changeButton(false)
+					if(res.status == Config.STATUS_PURCHASE_DENIED)
+						noticePurchaseDenied.render();
+					if(res.status == Config.STATUS_NO_CREDENTIALS)
+						noticeNoCred.render()
+					if(res.status == Config.STATUS_PURCHASE_APPROVED)
+						noticeApproved.render()	
+				},
 			})
 			;
 		},

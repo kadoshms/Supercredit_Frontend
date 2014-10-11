@@ -9,14 +9,16 @@ define([
 	var exports = {}
 	exports.NoticeView = Backbone.View.extend({
 		el : '#notice-container',
-		initialize: function(content){
+		initialize: function(type,content,sign){
+			this.type = type;
 			this.content = content;
+			this.sign = sign;
 		},
 		destroy: function(){
 			this.$el.empty()
 		},
 		render: function(){
-			var output = Mustache.to_html(NoticeTemplate,{content:this.content})
+			var output = Mustache.to_html(NoticeTemplate,{type:this.type,content:this.content,sign:this.sign})
 			this.$el.html(output)
 		}
 	});

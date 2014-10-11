@@ -1,21 +1,22 @@
 <div class="row">
 	<div class="col-md-offset-2 col-md-8">
-		<div class="panel panel-info">
+		<div class="panel panel-success">
 			<div class="panel-heading text-center">New Purchase</div>
 			<div class="panel-body" id="main-panel-body">
 				<div id="notice-container"></div>
-				<div class="alert alert-success" role="alert">Please choose a Purchase Type</div>
+				<div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-info-sign"></span> Please choose a Purchase Type</div>
 				<form method="post" id="purchase-form">
-				<input type="text" value="123456" name="credit_hash">
-				<input type="text" value="3" name="purchase_type">
-				<input type="text" value="1000000000000" name="purchase_amount">
+				<div class="input-group">
+				  <span class="input-group-addon">Credit Card Number</span>
+				  <input type="text" class="form-control" placeholder="000000" name="credit_hash">
+				</div><br />
 				<div id="types"></div>
 				<div id="slider-container"></div>
 				<br />
 				<div class="input-group" id="purchase-row">
 					<span class="input-group-btn">
-						<button id="btn-purchase" class="btn btn-success" type="button"><span class="glyphicon glyphicon-usd"></span> Purchase Now</button>
-					</span> <input type="text" class="form-control" value="{{slider_min}} ₪" id="slider-value">
+						<button id="btn-purchase" class="btn btn-success" type="button"><span class="glyphicon glyphicon-shopping-cart" id="btn-icon"></span> <span id="btn-text">Purchase Now</span></button>
+					</span> <input type="text" class="form-control" value="{{slider_min}}" id="slider-value" name="purchase_amount">
 				</div>
 				</form>
 			</div>
