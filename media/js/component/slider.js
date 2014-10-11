@@ -22,14 +22,20 @@ define([
 			this.model = viewParams.model
 			this.render()
 		},
+		getOption: function(){
+			console.log( this.sliderOptions);
+		},
 		render: function(){
 			var _options = this.sliderOptions;
-			var content = Mustache.to_html(SliderTemplate,{max:_options.max})
+			var content = Mustache.to_html(SliderTemplate,{max:_options.max,min:_options.min})
 			this.$el.html(content)
 			var _sliderContainer = this.$el.find('#slider')
 			var model = this.model;
 			_sliderContainer.slider(_options).
 				on('slideStop',function(e){
+					model.setValue(e.value)
+				}).
+				on('slide',function(e){
 					model.setValue(e.value)
 				});
 		}

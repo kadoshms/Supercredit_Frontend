@@ -3,13 +3,16 @@
 		<div class="panel panel-info">
 			<div class="panel-heading text-center">New Purchase</div>
 			<div class="panel-body" id="main-panel-body">
-				<div class="alert alert-success" role="alert">Please choose a
-					Purchase Type</div>
+				<div id="notice-container"></div>
+				<div class="alert alert-success" role="alert">Please choose a Purchase Type</div>
 				<form id="types"></form>
-				<div id="slider-container"></div><br />
-				<button type="button" class="btn btn-success btn-lg">
-					<span class="glyphicon glyphicon-usd"></span> Purchase Now
-				</button>
+				<div id="slider-container"></div>
+				<br />
+				<div class="input-group" id="purchase-row">
+					<span class="input-group-btn">
+						<button id="btn-purchase" class="btn btn-success" type="button"><span class="glyphicon glyphicon-usd"></span> Purchase Now</button>
+					</span> <input type="text" class="form-control" value="{{slider_min}} ₪" id="slider-value">
+				</div>
 			</div>
 		</div>
 	</div>

@@ -8317,3 +8317,9 @@ html, body {
   padding-left: 20px;
   font-weight: bold;
 }
+
+/* line 45, ../sass/screen.scss */
+#purchase-row {
+  width: 35%;
+  margin: auto;
+}
