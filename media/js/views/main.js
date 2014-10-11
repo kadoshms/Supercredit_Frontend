@@ -2,12 +2,13 @@ define([
   'jquery',
   'underscore',
   'backbone',
+  'config',
   'libs/mustache',
   'component/purchase-types',
   'component/slider',
   'component/notice',
   'text!templates/main.mustache'
-], function($, _, Backbone,Mustache,PurchaseTypes,Slider,Notice,MainTemplate){
+], function($, _, Backbone,Config,Mustache,PurchaseTypes,Slider,Notice,MainTemplate){
 	var exports = {}
 	exports.MainView = Backbone.View.extend({
 		SLIDER_MIN: 1,
@@ -33,6 +34,17 @@ define([
 			}
 			else
 				noticeNoType.destroy()
+			$.ajax({
+				type: "POST",
+				url: Config.url+"purchases/",
+				data: $( "#purchase-form" ).serialize(),
+				fail: function(e){
+					console.log(e)
+				},
+				//success: success,
+				//ataType: dataType
+			})
+			;
 		},
 		render: function(){
 			var view = this;

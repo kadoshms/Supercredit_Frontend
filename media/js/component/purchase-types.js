@@ -44,9 +44,6 @@ define([
 		render: function(){
 			var _types = this.collection;
 			var output = Mustache.to_html(ListTemplate,{items:_types.toJSON()})
-		    this.collection.each(function(log) {
-		        
-		    });
 			this.$el.html(output)
 		}
 	});

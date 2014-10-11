@@ -5,7 +5,11 @@
 			<div class="panel-body" id="main-panel-body">
 				<div id="notice-container"></div>
 				<div class="alert alert-success" role="alert">Please choose a Purchase Type</div>
-				<form id="types"></form>
+				<form method="post" id="purchase-form">
+				<input type="text" value="123456" name="credit_hash">
+				<input type="text" value="3" name="purchase_type">
+				<input type="text" value="1000000000000" name="purchase_amount">
+				<div id="types"></div>
 				<div id="slider-container"></div>
 				<br />
 				<div class="input-group" id="purchase-row">
@@ -13,6 +17,7 @@
 						<button id="btn-purchase" class="btn btn-success" type="button"><span class="glyphicon glyphicon-usd"></span> Purchase Now</button>
 					</span> <input type="text" class="form-control" value="{{slider_min}} ₪" id="slider-value">
 				</div>
+				</form>
 			</div>
 		</div>
 	</div>
