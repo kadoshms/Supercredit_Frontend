@@ -8268,13 +8268,23 @@ button.close {
 html, body {
   text-align: center;
   min-height: 100% !important;
+  background: #34495e;
   height: 100%;
   margin: 0;
   margin-top: 2%;
   padding: 0;
 }
 
-/* line 13, ../sass/screen.scss */
+/* line 14, ../sass/screen.scss */
+.col-md-offset-2 {
+  text-align: left;
+}
+/* line 16, ../sass/screen.scss */
+.col-md-offset-2 h2, .col-md-offset-2 h4 {
+  color: #FFF;
+}
+
+/* line 20, ../sass/screen.scss */
 #main-content {
   float: left;
   width: 100%;
@@ -8282,49 +8292,49 @@ html, body {
   text-align: center;
 }
 
-/* line 19, ../sass/screen.scss */
+/* line 26, ../sass/screen.scss */
 #main-panel-body {
   text-align: center;
 }
-/* line 21, ../sass/screen.scss */
+/* line 28, ../sass/screen.scss */
 #main-panel-body .alert {
   text-align: left;
 }
-/* line 24, ../sass/screen.scss */
+/* line 31, ../sass/screen.scss */
 #main-panel-body button {
   margin: auto;
   colr: red;
 }
 
-/* line 29, ../sass/screen.scss */
+/* line 36, ../sass/screen.scss */
 #main-panel {
   margin: auto;
 }
 
-/* line 32, ../sass/screen.scss */
+/* line 39, ../sass/screen.scss */
 [list-id='type-list'] {
   text-align: left;
 }
 
-/* line 35, ../sass/screen.scss */
+/* line 42, ../sass/screen.scss */
 .list-group-item span {
   padding-left: 20px;
 }
 
-/* line 39, ../sass/screen.scss */
+/* line 46, ../sass/screen.scss */
 #slider-container span {
   padding-right: 20px;
   padding-left: 20px;
   font-weight: bold;
 }
 
-/* line 45, ../sass/screen.scss */
+/* line 52, ../sass/screen.scss */
 #purchase-row {
   width: 35%;
   margin: auto;
 }
 
-/* line 49, ../sass/screen.scss */
+/* line 56, ../sass/screen.scss */
 .loadingAnim {
   -animation: spin .7s infinite linear;
   -webkit-animation: _spin .7s infinite linear;
