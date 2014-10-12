@@ -38,6 +38,9 @@ define([
 				_btnIcon.addClass('glyphicon-shopping-cart').removeClass('glyphicon-refresh').removeClass('loadingAnim')				
 			}
 		},
+		clearNotices: function(){
+			this.$el.find('#notice-container').empty()
+		},
 		purchase: function(){
 			var view = this;
 			var noticeNoType = new Notice.NoticeView("warning","You Havent Chosent a Purchase Type!","warning-sign","no-type")
@@ -71,6 +74,7 @@ define([
 					console.log(e)
 				},
 				success: function(res){
+					view.clearNotices()
 					view.changeButton(false)
 					if(res.status == Config.STATUS_PURCHASE_DENIED)
 						noticePurchaseDenied.render();
