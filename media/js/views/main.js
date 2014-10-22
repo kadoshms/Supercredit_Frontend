@@ -16,10 +16,26 @@ define([
 		el : '#main-content',
 		events:{
 			"click #btn-purchase": "purchase",
+			"blur #credit-card":  "purchase",
+			"change input[type='radio']": "enableCreditCardInput",
 		},
 		initialize: function(){
+			var view = this;
 			this.sliderModel = new Slider.SliderModel()
 			this.listenTo(this.sliderModel,"change",this.updateSliderValue)
+			$(document).keypress(function(){
+				view.inputCredit()
+			})
+		},
+		inputCredit: function(){
+			var input = this.$el.find("input[name=credit_hash]")
+			input.prop('disabled',false).focus()
+			setTimeout(function(){
+				input.blur()
+			},500)
+		},
+		enableCreditCardInput: function(){
+			this.$el.find("input[name=credit_hash]").prop('disabled',false);
 		},
 		updateSliderValue: function(){
 			var _sliderValue = this.$el.find('#slider-value').val(this.sliderModel.get("value"))
@@ -81,7 +97,9 @@ define([
 					if(res.status == Config.STATUS_NO_CREDENTIALS)
 						noticeNoCred.render()
 					if(res.status == Config.STATUS_PURCHASE_APPROVED)
-						noticeApproved.render()	
+						noticeApproved.render()
+					view.$el.find("input[name=credit_hash]").val('')
+					
 				},
 			})
 			;
