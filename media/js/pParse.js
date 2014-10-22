@@ -6,14 +6,15 @@
 define(
   [
    'jquery',
-   'parse'
-  ], function ($, Parse) {
+   'parse',
+   'config'
+  ], function ($, Parse, Config) {
       "use strict";
       var params = {}
       Parse.$ = $;
-      params.appId = "CtKrDhLEMo8k05hV4HekNMkx4MXmpBercuzruQ2T";
-      params.jsKey = "DXiwCPUXTc5KexElBXhOVg6y9UWi0ym4bbbuD8LL";
-      Parse.initialize(params.appId,params.jsKey);
+      params.appId = Config.APP_ID;
+      params.jskey = Config.JS_KEY;
+      Parse.initialize(Config.APP_ID,Config.JS_KEY);
       return {parse:Parse,params:params};
   }
 );

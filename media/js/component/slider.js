@@ -8,8 +8,16 @@ define([
 ], function($, _, Backbone,Mustache,BootstrapSlider,SliderTemplate){
 	var exports = {}
 	exports.SliderModel = Backbone.Model.extend({
+		constructor: function(max){
+			Backbone.Model.apply(this, []);
+			this.set({max:max})
+		},
 		setValue : function(value){
-			this.set("value",value)
+			var max = this.get("max");
+			if(value <= max)
+				this.set("value",value)
+			else
+				this.set("value",max)
 		},
 		getValue : function(){
 			return this.get("value")
@@ -20,7 +28,12 @@ define([
 		initialize: function(viewParams){
 			this.sliderOptions = viewParams.options;
 			this.model = viewParams.model
+			this.listenTo(this.model,"change",this.setSliderValue)
 			this.render()
+		},
+		setSliderValue: function(){
+			var _sliderContainer = this.$el.find('#slider')
+			_sliderContainer.slider('setValue',this.model.getValue())
 		},
 		render: function(){
 			var _options = this.sliderOptions;

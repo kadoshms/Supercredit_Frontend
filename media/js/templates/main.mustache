@@ -1,7 +1,18 @@
+<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+  <div class="container-fluid">
+    <div class="navbar-header">
+    	<div>
+    		<img alt="Brand" src="media/images/SuperCredit.png">
+    	</div>
+        <div class="text">
+            <h2>Supercreidt Client</h2>
+        	<h4>RESTful API Client</h4>
+        </div>
+    </div>
+  </div>
+</nav>
 <div class="row">
 	<div class="col-md-offset-2 col-md-8">
-		<h2>Supercreidt Client</h2>
-		<h4>RESTful API Client</h4>
 		<div class="panel panel-success">
 			<div class="panel-heading text-center">New Purchase</div>
 			<div class="panel-body" id="main-panel-body">
@@ -19,7 +30,7 @@
 				<div class="input-group" id="purchase-row">
 					<span class="input-group-btn">
 						<button id="btn-purchase" class="btn btn-success" type="button"><span class="glyphicon glyphicon-shopping-cart" id="btn-icon"></span> <span id="btn-text">Purchase Now</span></button>
-					</span> <input type="text" class="form-control" value="{{slider_min}}" id="slider-value" name="purchase_amount">
+					</span> <input type="text" maxlength="{{max_length}}" class="form-control" value="{{slider_min}}" id="slider-value" name="purchase_amount">
 				</div>
 				</form>
 			</div>

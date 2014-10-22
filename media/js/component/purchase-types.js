@@ -1,18 +1,3 @@
-/*
-			var ParseTodo = Parse.Object.extend({
-				  className: "PurchaseTypes"
-				});
-			  var ParseTodoCollection = Parse.Collection.extend({
-				  model: ParseTodo
-				});
-				 
-				var todos = new ParseTodoCollection();
-				 
-				// Construct a query to get the current user's todo items
-				var query = new Parse.Query(ParseTodo);
-				todos.query = query;
-				todos.fetch();
-				console.log(todos)*/
 define([
   'jquery',
   'underscore',

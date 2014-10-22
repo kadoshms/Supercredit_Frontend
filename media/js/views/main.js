@@ -3,36 +3,77 @@ define([
   'underscore',
   'backbone',
   'config',
+  'pParse',
   'libs/mustache',
   'component/purchase-types',
   'component/slider',
   'component/notice',
   'text!templates/main.mustache'
-], function($, _, Backbone,Config,Mustache,PurchaseTypes,Slider,Notice,MainTemplate){
+], function($, _, Backbone,Config,pParse,Mustache,PurchaseTypes,Slider,Notice,MainTemplate){
 	var exports = {}
 	exports.MainView = Backbone.View.extend({
-		SLIDER_MIN: 1,
-		SLIDER_MAX: 2000,
 		el : '#main-content',
 		events:{
 			"click #btn-purchase": "purchase",
 			"blur #credit-card":  "purchase",
-			"change input[type='radio']": "enableCreditCardInput",
+			"input #slider-value" : "updateSlider"
 		},
 		initialize: function(){
-			var view = this;
-			this.sliderModel = new Slider.SliderModel()
+			this.sliderModel = new Slider.SliderModel(Config.SLIDER_MAX)
 			this.listenTo(this.sliderModel,"change",this.updateSliderValue)
-			$(document).keypress(function(){
-				view.inputCredit()
+			this.cardReading()
+			console.log(Config.PURCHASES_CLASS_REST+'niojqU7Vhe')
+		},
+		updateSlider: function(e){
+			var current = $(e.currentTarget)
+			this.sliderModel.setValue(current.val())
+		},
+		cardReading: function(){
+			var _credit = [];
+			var view = this;
+			var delay = (function(){
+				  var timer = 0;
+				  return function(callback, ms){
+				    clearTimeout (timer);
+				    timer = setTimeout(callback, ms);
+				  };
+				})();
+			$(window).keypress(function(e){
+				view.timeDiff = Date.now()-e.timeStamp;
+				if(typeof(_credit) != "undefined")
+					_credit.push({key: String.fromCharCode(e.which), time:e.timeStamp});
+				else{
+					_credit = []
+					_credit.push({key: String.fromCharCode(e.which), time:e.timeStamp});
+				}
+				 delay(function(){
+					var avg = 0, creditString = _credit[0].key;
+					for(var i = 1; i < _credit.length; i++){
+						avg +=_credit[i].time-_credit[i-1].time;
+						creditString+= _credit[i].key;
+					}
+					avg = avg/_credit.length;
+					if(avg <= Config.READER_AVG)
+						view.autoPurchase(creditString)
+					//reset vars
+					creditString = '';
+					_credit = []
+					avg = 0;
+				}, Config.TIME_DELAY );
+
 			})
 		},
-		inputCredit: function(){
+		enableInput: function(){
 			var input = this.$el.find("input[name=credit_hash]")
 			input.prop('disabled',false).focus()
+		},
+		autoPurchase: function(credit){
+			var view = this;
+			var input = view.$el.find("input[name=credit_hash]")
 			setTimeout(function(){
+				input.prop('disabled',false).focus().val(credit)
 				input.blur()
-			},500)
+			},Config.TIME_DELAY)
 		},
 		enableCreditCardInput: function(){
 			this.$el.find("input[name=credit_hash]").prop('disabled',false);
@@ -61,6 +102,7 @@ define([
 			var view = this;
 			var noticeNoType = new Notice.NoticeView("warning","You Havent Chosent a Purchase Type!","warning-sign","no-type")
 			var noticeEmptyCredit = new Notice.NoticeView("warning","You havent filled your Supercredit Card number!","warning-sign","no-credit")
+			var noticePending = new Notice.NoticeView("warning","Purchase Denied, But waiting for your response...","warning-sign","pending")
 			var noticeApproved = new Notice.NoticeView("success","Purchase Approved!","ok","purchase-approved")
 			var noticeNoCred = new Notice.NoticeView("warning","Credit card number was not authorized.","warning-sign","no-credentials")
 			var noticePurchaseDenied = new Notice.NoticeView("danger","Your Purchase was Denied! A Push Notification Should Arrive now.","ban-circle","purchase_denied")
@@ -94,25 +136,61 @@ define([
 					view.changeButton(false)
 					if(res.status == Config.STATUS_PURCHASE_DENIED)
 						noticePurchaseDenied.render();
+					if(res.status == Config.STATUS_PURCHASE_PENDING){
+						noticePending.render()
+						view.pendingTimeout(res.purchase_id)
+					}
 					if(res.status == Config.STATUS_NO_CREDENTIALS)
 						noticeNoCred.render()
 					if(res.status == Config.STATUS_PURCHASE_APPROVED)
-						noticeApproved.render()
-					view.$el.find("input[name=credit_hash]").val('')
+						noticeApproved.render();
+					view.$el.find("input[name=credit_hash]").val('').prop('disabled',true)
 					
 				},
 			})
 			;
 		},
+		pendingTimeout: function(purchase_id){
+			var view = this;
+			//check class in parse every X seconds
+			var _interval = setInterval(function(){
+				$.ajax({
+			         url: Config.PURCHASES_CLASS_REST+purchase_id,
+			         type: "GET",
+			         //headers:[{'X-Parse-Application-Id' : Config.APP_ID},{'X-Parse-REST-API-Key':Config.REST_KEY}],
+			         beforeSend: function (xhr) {
+			        	    xhr.setRequestHeader ("X-Parse-Application-Id", Config.APP_ID);
+			        	    xhr.setRequestHeader ("X-Parse-REST-API-Key", Config.REST_KEY);
+			         },
+			         success: function(data) {
+			        	 if(data.status != Config.STATUS_PURCHASE_PENDING){
+			        		 clearInterval(_interval);
+			        		 view.purchaseResolved(data.status)
+			        	 }
+			        		
+			         }
+			    });
+			},Config.PENDING_TIME * 1000)
+		},
+		purchaseResolved: function(status){
+			var view = this;
+			view.clearNotices()
+			var alert = status == Config.STATUS_PURCHASE_DENIED ?
+					new Notice.NoticeView("info","You Decided to Cancel this Purchase.","ban-circle","purchase_denied")
+					:
+					new Notice.NoticeView("info","You Decided to Approve this Purchase Anyway...","ok","purchase-approved")	
+			alert.render()
+		},
 		render: function(){
 			var view = this;
-			var _content = Mustache.to_html(MainTemplate,{slider_min:this.SLIDER_MIN})
+			var _maxLength = String(Config.SLIDER_MAX).length
+			var _content = Mustache.to_html(MainTemplate,{slider_min:Config.SLIDER_MIN,max_length:_maxLength})
 			this.$el.html(_content)
 			var _typesContainer = this.$el.find('#types')
 			var purchaseTypesView = new PurchaseTypes.PurchaseTypesView({el:_typesContainer})
 			var slider = new Slider.SliderView({model:this.sliderModel,options:{
-				max 	: view.SLIDER_MAX,
-				min		: view.SLIDER_MIN,
+				max 	: Config.SLIDER_MAX,
+				min		: Config.SLIDER_MIN,
 				handle	: 'square',
 				tooltip : 'hide'
 			}})
