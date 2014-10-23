@@ -35,8 +35,27 @@ html,body{
 	}
 }
 #logo{
-	width:256px;
-	margin:auto;
+}
+.floating{
+	 -webkit-animation-name: Floatingx;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: ease-in-out;
+    -moz-animation-name: Floating;
+    -moz-animation-duration: 2s;
+    -moz-animation-iteration-count: infinite;
+    -moz-animation-timing-function: ease-in-out;
+}
+@-webkit-keyframes Floatingx{
+    from {-webkit-transform:translate(0, 0px);}
+    65% {-webkit-transform:translate(0, 12px);}
+    to {-webkit-transform: translate(0, -0px);    }    
+}
+    
+@-moz-keyframes Floating{
+    from {-moz-transform:translate(0, 0px);}
+    65% {-moz-transform:translate(0, 15px);}
+    to {-moz-transform: translate(0, -0px);}    
 }
 .navbar{
 	position:fixed;
@@ -44,6 +63,7 @@ html,body{
 	width:100%;
 	z-index:999;
 	padding:10px;
+	-webkit-animation: navbarAnim 0.6s cubic-bezier(0, 1.5, 1, 1);;
 }
 .navbar div{
 	float:left;
@@ -69,6 +89,10 @@ html,body{
 	color: #FFF;
 	font-size: 20px;
 }
+@-webkit-keyframes navbarAnim {
+    from { top:-100px;}
+    to { top:0}
+}
 #main-panel{
 	margin : auto;
 }
@@ -85,15 +109,54 @@ html,body{
 		font-weight	: bold;
 	}
 }
+.alert{
+	height:51px;
+}
 #purchase-row{
 	width:35%;
 	margin:auto;
+}
+#types{
+	label{
+		font-weight:normal;
+		cursor:pointer;
+		span{
+			position:relative;
+		}
+	}
+	label:hover{
+		color:#000;
+	}
+}
+.categoryAnim {
+    -animation: catAnim 1.3s infinite linear;
+    -webkit-animation: _catAnim 1.3s infinite linear;
+}
+@-webkit-keyframes _catAnim {
+	0%{background:#ffffff}
+	60%{background:#d8d8d8}
+	100%{background:#ffffff}
+}
+@-webkit-keyframes _catAnimBack {
+    from { left:80px}
+    to { left:0px}
+}
+@keyframes catAnim {
+    from { left:0px}
+    to { left:80px}
 }
 .loadingAnim {
     -animation: spin .7s infinite linear;
     -webkit-animation: _spin .7s infinite linear;
 }
-
+.leftNotice{
+	float:left;
+	text-align:left;
+}
+.rightNotice{
+	float:right;
+	text-align:right;
+}
 @-webkit-keyframes _spin {
     from { -webkit-transform: rotate(0deg);}
     to { -webkit-transform: rotate(360deg);}

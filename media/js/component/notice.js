@@ -15,6 +15,9 @@ define([
 			this.sign = sign;
 			this.identifier = identifier;
 		},
+		setContent: function(content){
+			this.content = content;
+		},
 		destroy: function(){
 			var e = this.$el.find('[notice-id="'+this.identifier+'"]').remove()
 		},

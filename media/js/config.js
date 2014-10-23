@@ -12,7 +12,9 @@ define([
 	exports.SLIDER_MIN					= 1;
 	exports.READER_AVG					= 11;
 	exports.TIME_DELAY					= 500;
-	exports.PENDING_TIME				= 3; //seconds
+	exports.PENDING_TIME				= 1; //seconds
+	exports.AUTO_APPROVE_TIME			= 20;
+	exports.AUTO_APPROVE_URL			= exports.url+"purchase/";
     exports.APP_ID 						= "CtKrDhLEMo8k05hV4HekNMkx4MXmpBercuzruQ2T";
     exports.JS_KEY 						= "DXiwCPUXTc5KexElBXhOVg6y9UWi0ym4bbbuD8LL";
     exports.REST_KEY	 				= "wOcrKgh0Q6icbGJ4gotHtmLpYdVPntPhhMKpGVsc";

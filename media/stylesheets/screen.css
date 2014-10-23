@@ -8307,89 +8307,190 @@ html, body {
   colr: red;
 }
 
-/* line 37, ../sass/screen.scss */
-#logo {
-  width: 256px;
-  margin: auto;
+/* line 39, ../sass/screen.scss */
+.floating {
+  -webkit-animation-name: Floatingx;
+  -webkit-animation-duration: 2s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: ease-in-out;
+  -moz-animation-name: Floating;
+  -moz-animation-duration: 2s;
+  -moz-animation-iteration-count: infinite;
+  -moz-animation-timing-function: ease-in-out;
 }
 
-/* line 41, ../sass/screen.scss */
+@-webkit-keyframes Floatingx {
+  from {
+    -webkit-transform: translate(0, 0px);
+  }
+  65% {
+    -webkit-transform: translate(0, 12px);
+  }
+  to {
+    -webkit-transform: translate(0, 0px);
+  }
+}
+@-moz-keyframes Floating {
+  from {
+    -moz-transform: translate(0, 0px);
+  }
+  65% {
+    -moz-transform: translate(0, 15px);
+  }
+  to {
+    -moz-transform: translate(0, 0px);
+  }
+}
+/* line 60, ../sass/screen.scss */
 .navbar {
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 999;
   padding: 10px;
+  -webkit-animation: navbarAnim 0.6s cubic-bezier(0, 1.5, 1, 1);
 }
 
-/* line 48, ../sass/screen.scss */
+/* line 68, ../sass/screen.scss */
 .navbar div {
   float: left;
   text-align: left;
   height: 100%;
 }
 
-/* line 53, ../sass/screen.scss */
+/* line 73, ../sass/screen.scss */
 .navbar .text {
   padding-left: 30px;
 }
 
-/* line 56, ../sass/screen.scss */
+/* line 76, ../sass/screen.scss */
 .navbar img {
   width: 80px;
   position: relative;
 }
 
-/* line 60, ../sass/screen.scss */
+/* line 80, ../sass/screen.scss */
 .navbar h2 {
   font-size: 20px;
   color: #FFF;
 }
 
-/* line 64, ../sass/screen.scss */
+/* line 84, ../sass/screen.scss */
 .navbar h4 {
   font-size: 14px;
   color: #FFF;
 }
 
-/* line 68, ../sass/screen.scss */
+/* line 88, ../sass/screen.scss */
 .navbar span {
   color: #FFF;
   font-size: 20px;
 }
 
-/* line 72, ../sass/screen.scss */
+@-webkit-keyframes navbarAnim {
+  from {
+    top: -100px;
+  }
+  to {
+    top: 0;
+  }
+}
+/* line 96, ../sass/screen.scss */
 #main-panel {
   margin: auto;
 }
 
-/* line 75, ../sass/screen.scss */
+/* line 99, ../sass/screen.scss */
 [list-id='type-list'] {
   text-align: left;
 }
 
-/* line 78, ../sass/screen.scss */
+/* line 102, ../sass/screen.scss */
 .list-group-item span {
   padding-left: 20px;
 }
 
-/* line 82, ../sass/screen.scss */
+/* line 106, ../sass/screen.scss */
 #slider-container span {
   padding-right: 20px;
   padding-left: 20px;
   font-weight: bold;
 }
 
-/* line 88, ../sass/screen.scss */
+/* line 112, ../sass/screen.scss */
+.alert {
+  height: 51px;
+}
+
+/* line 115, ../sass/screen.scss */
 #purchase-row {
   width: 35%;
   margin: auto;
 }
 
-/* line 92, ../sass/screen.scss */
+/* line 120, ../sass/screen.scss */
+#types label {
+  font-weight: normal;
+  cursor: pointer;
+}
+/* line 123, ../sass/screen.scss */
+#types label span {
+  position: relative;
+}
+/* line 127, ../sass/screen.scss */
+#types label:hover {
+  color: #000;
+}
+
+/* line 131, ../sass/screen.scss */
+.categoryAnim {
+  -animation: catAnim 1.3s infinite linear;
+  -webkit-animation: _catAnim 1.3s infinite linear;
+}
+
+@-webkit-keyframes _catAnim {
+  0% {
+    background: #ffffff;
+  }
+  60% {
+    background: #d8d8d8;
+  }
+  100% {
+    background: #ffffff;
+  }
+}
+@-webkit-keyframes _catAnimBack {
+  from {
+    left: 80px;
+  }
+  to {
+    left: 0px;
+  }
+}
+@keyframes catAnim {
+  from {
+    left: 0px;
+  }
+  to {
+    left: 80px;
+  }
+}
+/* line 148, ../sass/screen.scss */
 .loadingAnim {
   -animation: spin .7s infinite linear;
   -webkit-animation: _spin .7s infinite linear;
+}
+
+/* line 152, ../sass/screen.scss */
+.leftNotice {
+  float: left;
+  text-align: left;
+}
+
+/* line 156, ../sass/screen.scss */
+.rightNotice {
+  float: right;
+  text-align: right;
 }
 
 @-webkit-keyframes _spin {

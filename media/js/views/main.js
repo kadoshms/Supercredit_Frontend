@@ -8,8 +8,9 @@ define([
   'component/purchase-types',
   'component/slider',
   'component/notice',
+  'component/timer',
   'text!templates/main.mustache'
-], function($, _, Backbone,Config,pParse,Mustache,PurchaseTypes,Slider,Notice,MainTemplate){
+], function($, _, Backbone,Config,pParse,Mustache,PurchaseTypes,Slider,Notice,Timer,MainTemplate){
 	var exports = {}
 	exports.MainView = Backbone.View.extend({
 		el : '#main-content',
@@ -83,16 +84,36 @@ define([
 		},
 		changeButton: function(toLoading){
 			var _btn = this.$el.find('#btn-purchase');
+			var _logo =this.$el.find('#logo');
 			var _btnIcon = this.$el.find('#btn-icon');
 			var _btnTxt = _btn.find('#btn-text')
 			if(toLoading){
 				_btnTxt.text('Loading...')
 				_btn.removeClass('btn-success').addClass('btn-warning');
-				_btnIcon.removeClass('glyphicon-shopping-cart').addClass('glyphicon-refresh').addClass('loadingAnim')		
+				_logo.addClass('floating')
+				_btnIcon.removeClass('glyphicon-shopping-cart').addClass('glyphicon-refresh').addClass('loadingAnim')
+				$('li[type=list-item]').each(function(){
+					var input = $(this).find('input')
+					   if(!$(input).is(':checked')){
+						   $(this).slideUp()
+					   }else{
+						  $(this).addClass('categoryAnim')
+					   }
+				});
+				$('input[name=radioName]:checked', '#myForm').val()
 			}else{
 				_btnTxt.text('Purchase Now')
 				_btn.removeClass('btn-warning').addClass('btn-success');
-				_btnIcon.addClass('glyphicon-shopping-cart').removeClass('glyphicon-refresh').removeClass('loadingAnim')				
+				_btnIcon.addClass('glyphicon-shopping-cart').removeClass('glyphicon-refresh').removeClass('loadingAnim')
+				_logo.removeClass('floating')
+				$('li[type=list-item]').each(function(){
+					 $(this).slideDown()
+					  var input = $(this).find('input')
+					  var span = $(this).find('span')
+					  if($(input).is(':checked'))
+						   $(this).removeClass('categoryAnim')
+					
+				});
 			}
 		},
 		clearNotices: function(){
@@ -138,12 +159,19 @@ define([
 						noticePurchaseDenied.render();
 					if(res.status == Config.STATUS_PURCHASE_PENDING){
 						noticePending.render()
+						var _timerModel = new Timer.TimerModel(Config.AUTO_APPROVE_TIME)
+						var _timer = new Timer.TimerView({model:_timerModel})
+						_timer.render()
 						view.pendingTimeout(res.purchase_id)
 					}
 					if(res.status == Config.STATUS_NO_CREDENTIALS)
 						noticeNoCred.render()
-					if(res.status == Config.STATUS_PURCHASE_APPROVED)
+					if(res.status == Config.STATUS_PURCHASE_APPROVED){
+						if(typeof(res.purchase_id) != "undefined")
+							noticeApproved.setContent("Purchase Approved, Even though you have crossed your Budget.")
 						noticeApproved.render();
+					}
+						
 					view.$el.find("input[name=credit_hash]").val('').prop('disabled',true)
 					
 				},
@@ -152,12 +180,25 @@ define([
 		},
 		pendingTimeout: function(purchase_id){
 			var view = this;
+			var _time = 0;
+			var _requestSent = false;
 			//check class in parse every X seconds
 			var _interval = setInterval(function(){
+				_time += Config.PENDING_TIME;
+				if(_time >= Config.AUTO_APPROVE_TIME && !_requestSent){
+					$.ajax({
+					     type: "POST",
+					     crossDomain: true,
+					     url: Config.AUTO_APPROVE_URL+purchase_id,
+					    success: function(){
+					    	view.purchaseResolved(Config.STATUS_PURCHASE_APPROVED)
+					    	_requestSent = true;
+					    }
+					});
+				}
 				$.ajax({
 			         url: Config.PURCHASES_CLASS_REST+purchase_id,
 			         type: "GET",
-			         //headers:[{'X-Parse-Application-Id' : Config.APP_ID},{'X-Parse-REST-API-Key':Config.REST_KEY}],
 			         beforeSend: function (xhr) {
 			        	    xhr.setRequestHeader ("X-Parse-Application-Id", Config.APP_ID);
 			        	    xhr.setRequestHeader ("X-Parse-REST-API-Key", Config.REST_KEY);
