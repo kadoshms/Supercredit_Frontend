@@ -1,0 +1,4 @@
+This is a simple user-interface based on backbone.js, that interacts with a REST api.
+Was written for Bank Leumi Hackaton.
+
+Maybe useful: I implemented an event handler that deals with card readers. what happens is that on card swiping the event is fired and  a makes the rest of the manipulations.
